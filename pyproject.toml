@@ -1,0 +1,31 @@
+[project]
+name = "chat-app"
+version = "0.1.0"
+description = "Replica of ChatGPT using OpenAI API"
+readme = "README.md"
+authors = [
+    { name = "denys" }
+]
+requires-python = ">=3.10"
+dependencies = []
+
+[project.scripts]
+chat-app = "chat_app:main"
+
+[build-system]
+requires = ["uv_build>=0.13.0,<0.14.0"]
+build-backend = "uv_build"
+
+[tool.mypy]
+python_version = "3.12"
+warn_return_any = true
+warn_unused_ignores = true
+disallow_untyped_defs = true
+check_untyped_defs = true
+ignore_missing_imports = true
+
+[[tool.mypy.overrides]]
+module = [
+	"tests.*"
+]
+ignore_missing_imports = true

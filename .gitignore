@@ -1,0 +1,13 @@
+# Developemnt files
+dev_reminder.md
+arquitetura.md
+
+
+# enviroment files
+.env
+.venv
+
+
+# generated caches
+.mypycache
+__pycache__
