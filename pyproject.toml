@@ -7,7 +7,30 @@ authors = [
     { name = "denys" }
 ]
 requires-python = ">=3.10"
-dependencies = []
+dependencies = [
+    "bcrypt>=5.0.0",
+    "black>=26.10.1",
+    "dotenv>=0.9.9",
+    "email-validator>=2.3.0",
+    "fastapi[standard]>=0.162.0",
+    "flake8>=7.4.1",
+    "httpx>=0.28.1",
+    "mypy>=2.4.1",
+    "openai>=3.41.0",
+    "passlib>=1.7.4",
+    "psycopg[binary]>=3.3.6",
+    "pwdlib[argon2]>=0.3.1",
+    "pydantic>=2.14.1",
+    "pydantic-settings>=2.15.0",
+    "pyjwt>=2.15.1",
+    "pytest>=9.2.0",
+    "pytest-asyncio>=1.4.1",
+    "python-jose[cryptography]>=3.5.0",
+    "python-multipart>=0.0.32",
+    "ruff>=0.17.3",
+    "sqlalchemy>=2.0.55",
+    "uvicorn[standard]>=0.54.0",
+]
 
 [project.scripts]
 chat-app = "chat_app:main"
