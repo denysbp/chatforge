@@ -1,8 +1,9 @@
 from dotenv import load_dotenv
 from pathlib import Path
-from app import EnvLoaderError
-from app import configure_logging
-from app import LogLevels, EnvErrorType
+from ..models import (
+    EnvErrorType,
+    LogLevels
+)
 import logging
 import os
 
@@ -41,6 +42,7 @@ def ensure_env() -> str:
         logging.warning(
             "Credentials not defined, "
             "we have created .env.example.\n"
+            "Copy the keys."
             "Change the credentials and launch "
             "the program again"
         )
@@ -60,16 +62,16 @@ def ensure_env() -> str:
                     "we decteted missing values on .env"
                 )
                 return EnvErrorType.MISSING
-            if any(key == DEFAULT_MESSAGE for key in ENV_KEYS):
+            if any(value == DEFAULT_MESSAGE for value in values):
                 logging.warning(
                     "You need to pass values on your .env "
-                    "file default messages can't be used"
+                    "file default messages can't be used."
                 )
                 return EnvErrorType.INVALID
     except PermissionError:
-        logging.warning(
+        logging.info(
             "we don't have acess to .env file "
-            "not permission error"
+            "not permission error."
         )
 
 if __name__ == "__main__":
