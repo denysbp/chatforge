@@ -11,3 +11,19 @@ class LogLevels(StrEnum):
     info = "INFO"
     error = "ERROR"
     debug = "DEBUG"
+
+
+class MessageRole(StrEnum):
+    SYSTEM = "system"
+    USER = "user"
+    ASSISTANT = "assistant"
+    TOOL = "tool"
+
+
+class MessageStatus(StrEnum):
+    READING = "reading"
+    GENERATING = "generating"
+    VALIDATED = "validated"
+    CONCLUDED = "concluded"
+    FAILED = "failed"
+    CANCELED = "canceled"
