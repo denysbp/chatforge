@@ -1,7 +1,8 @@
 from sqlalchemy import (
     String,
     ForeignKey,
-    Enum
+    Enum,
+    DateTime
 )
 from sqlalchemy.orm import (
     Mapped,
@@ -15,20 +16,20 @@ from .enums import (
     MessageRole,
     MessageStatus
 )
-from datetime import datetime
+from datetime import datetime, timezone
 
 
 class Message(Base):
 
     __tablename__ = "messages"
 
-    id: Mapped[int] = mapped_column(
+    id: Mapped[UUID] = mapped_column(
         UUID(as_uuid=True),
         primary_key=True,
-        default=uuid4()
+        default=uuid4
     )
 
-    conversation_id: Mapped[int] = mapped_column(
+    conversation_id: Mapped[UUID] = mapped_column(
         ForeignKey("conversations.id")
     )
 
@@ -60,10 +61,11 @@ class Message(Base):
         default=0,
     )
 
-    created_atcreated_at: Mapped[str] = mapped_column(
-        default=datetime.isoformat()
+    created_atcreated_at: Mapped[datetime] = mapped_column(
+        DateTime,
+        default=lambda : datetime.now(timezone.utc)
     )
 
-    completed_at: Mapped[str] = mapped_column(
+    completed_at: Mapped[datetime] = mapped_column(
         nullable=True
     )

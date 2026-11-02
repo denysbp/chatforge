@@ -8,9 +8,10 @@ from sqlalchemy.dialects.postgresql import UUID
 from uuid import uuid4
 from sqlalchemy import (
     String,
-    ForeignKey
+    ForeignKey,
+    DateTime
 )
-from datetime import datetime
+from datetime import datetime, timezone
 from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
@@ -21,17 +22,17 @@ class Conversation(Base):
 
     __tablename__ = "conversations"
 
-    id: Mapped[int] = mapped_column(
+    id: Mapped[UUID] = mapped_column(
         UUID(as_uuid=True),
         primary_key=True,
-        default=uuid4()
+        default=uuid4
     )
-    user_id: Mapped[int] = mapped_column(
+    user_id: Mapped[UUID] = mapped_column(
         ForeignKey("users.id")
     )
 
     author: Mapped["User"] = relationship(
-        back_populates="conversations"
+        back_populates="chats"
     )
 
     title: Mapped[str] = mapped_column(
@@ -46,11 +47,14 @@ class Conversation(Base):
         String(10000),
         default="Hey say something to me"
     )
-    created_at: Mapped[str] = mapped_column(
-        default=datetime.isoformat()
+    created_at: Mapped[datetime] = mapped_column(
+        DateTime,
+        default=lambda : datetime.now(timezone.utc)
     )
     updated_at: Mapped[str] = mapped_column(
-        nullable=True
+        DateTime,
+        nullable=True,
+        onupdate=datetime.now(timezone.utc)
     )
     archived_at: Mapped[str] = mapped_column(
         nullable=True

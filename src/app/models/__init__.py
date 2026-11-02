@@ -3,9 +3,10 @@ from .enums import (
     EnvErrorType
 )
 from .base import Base
-
+from .user import User
 __all__ = [
     "LogLevels",
     "EnvErrorType",
-    "Base"
+    "Base",
+    "User"
 ]
