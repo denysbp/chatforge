@@ -1,12 +1,12 @@
 from sqlalchemy import create_engine
-from sqlalchemy.orm import sessionmaker
+from sqlalchemy.orm import sessionmaker, Session
 from ..enviroment import ensure_env, Enviroment
 import sys
 from ..models import Base
 from .. import models
 
 class Connection:
-    def __init__(self, env: Enviroment):
+    def __init__(self):
         env = ensure_env()
         if not isinstance(env, dict):
             sys.exit(1)
@@ -20,5 +20,5 @@ class Connection:
     def create_tables(self):
         Base.metadata.create_all(bind=self.engine)
 
-    def get_session(self) -> sessionmaker:
+    def get_session(self) -> Session:
         return self.session

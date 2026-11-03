@@ -28,7 +28,8 @@ class Conversation(Base):
         default=uuid4
     )
     user_id: Mapped[UUID] = mapped_column(
-        ForeignKey("users.id")
+        ForeignKey("users.id"),
+        nullable=False
     )
 
     author: Mapped["User"] = relationship(
