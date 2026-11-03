@@ -6,6 +6,7 @@ from ..models import (
 )
 import logging
 import os
+from typing import Any, Dict
 
 ENV_KEYS = [
     "OPENIA_API",
@@ -16,7 +17,6 @@ ENV_KEYS = [
     "DB_PASSWORD",
     "DB_URL",
     "SECRECT_KEY",
-    "ALGORITHM",
     "ACESS_TOKEN_EXPIRE_MINUTES",
 ]
 
@@ -35,7 +35,7 @@ def create_env() -> None:
     except IOError as e:
         logging.warning(e)
 
-def ensure_env() -> str:
+def ensure_env() -> str | Dict[str, Any]:
     load_dotenv()
     if not ENV_PATH.exists() and not ENV_PATH.is_file():
         create_env()
@@ -57,6 +57,7 @@ def ensure_env() -> str:
                 create_env()
                 return EnvErrorType.INVALID
             values = [os.getenv(key) for key in ENV_KEYS]
+            env = {key: os.getenv(key) for key in ENV_KEYS}
             if any(key is None for key in values):
                 logging.warning(
                     "we decteted missing values on .env"
@@ -68,6 +69,7 @@ def ensure_env() -> str:
                     "file default messages can't be used."
                 )
                 return EnvErrorType.INVALID
+        return env
     except PermissionError:
         logging.info(
             "we don't have acess to .env file "
