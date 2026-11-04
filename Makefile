@@ -1,5 +1,6 @@
 VENV := .venv
 UV_EXIST := $(shell command -v uv 2> /dev/null)
+DB_CONTAINER := $(shell command grep "container_name" docker-compose.yaml | cut -d ':' -f 2 | xargs)
 
 
 all: ensure install
@@ -24,6 +25,15 @@ re: fclean install
 
 test:
 	uv run pytest
+
+ps:
+	docker ps
+
+db:
+	docker compose up -d
+
+stop:
+	docker stop $(DB_CONTAINER)
 
 lint:
 	uv run flake8 .

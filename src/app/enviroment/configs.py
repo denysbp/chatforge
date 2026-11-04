@@ -13,6 +13,7 @@ ENV_KEYS = [
     "ADMIN_LOGIN",
     "ADMIN_PASSWORD",
     "PORT",
+    "MODE"
     "DB_NAME",
     "DB_PASSWORD",
     "DB_URL",
@@ -57,7 +58,6 @@ def ensure_env() -> str | Dict[str, Any]:
                 create_env()
                 return EnvErrorType.INVALID
             values = [os.getenv(key) for key in ENV_KEYS]
-            env = {key: os.getenv(key) for key in ENV_KEYS}
             if any(key is None for key in values):
                 logging.warning(
                     "we decteted missing values on .env"
@@ -69,7 +69,6 @@ def ensure_env() -> str | Dict[str, Any]:
                     "file default messages can't be used."
                 )
                 return EnvErrorType.INVALID
-        return env
     except PermissionError:
         logging.info(
             "we don't have acess to .env file "

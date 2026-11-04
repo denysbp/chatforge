@@ -1,19 +1,15 @@
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker, Session
-from ..enviroment import ensure_env, Enviroment
+from ..enviroment import ensure_env, settings
 import sys
 from ..models import Base
 from .. import models
 
+
 class DataBase:
     def __init__(self):
-        env = ensure_env()
-        if not isinstance(env, dict):
-            sys.exit(1)
-        data = Enviroment(**env)
-        connection = f"{data.DB_URL}{data.DB_NAME}"
         self.engine = create_engine(
-            connection,
+            settings.DB_URL.encoded_string(),
             echo=True,
             pool_pre_ping=True
         )
@@ -29,3 +25,6 @@ class DataBase:
 
     def close(self):
         self.engine.dispose()
+
+    def drop_tables(self):
+        Base.metadata.drop_all(bind=self.engine)

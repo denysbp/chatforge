@@ -2,53 +2,59 @@ from app.models import (
     User,
     Conversation,
     Message,
-    RefreshToken
 )
-from sqlalchemy.orm import Session
-from app.enviroment import Enviroment
+from sqlalchemy.orm import Session, close_all_sessions
 from app.core import DataBase
+import pytest
 
 PASSWORD = "123456"
 connection = DataBase()
-connection.create_tables()
 session: Session = connection.get_session()
 
+try:
+    @pytest.fixture(scope="session", autouse=True)
+    def setup_database():
+        connection.create_tables()
 
+        yield
 
-def test_store_models() -> None:
-    user = User(
-        name="Test",
-        email="test@example.com"
-    )
-    user.password_hash = PASSWORD
+        connection.drop_tables()
 
-    con = Conversation(
-        title="TEST",
-        author=user
-    )
+    def test_store_models() -> None:
+        user = User(
+            name="Test",
+            email="test@example.com"
+        )
+        user.password_hash = PASSWORD
 
-    mess = Message(
-        conversation=con
-    )
+        con = Conversation(
+            title="TEST",
+            author=user
+        )
 
-    session.add(user)
-    session.commit()
+        mess = Message(
+            conversation=con
+        )
 
-    stored_message = session.query(Message).filter_by(
-        conversation_id=con.id
-    ).first()
+        session.add(user)
+        session.commit()
 
-    assert stored_message is not None
-    assert stored_message.conversation_id == con.id
+        stored_message = session.query(Message).filter_by(
+            conversation_id=con.id
+        ).first()
 
+        assert stored_message is not None
+        assert stored_message.conversation_id == con.id
 
+    def test_invalid_password() -> None:
+        user = User()
+        user.password_hash = PASSWORD
+        assert user.authenticate(PASSWORD[::-1]) ==  False
 
-def test_invalid_password() -> None:
-    user = User()
-    user.password_hash = PASSWORD
-    assert user.authenticate(PASSWORD[::-1]) ==  False
-
-def test_valid_password() -> None:
-    user = User()
-    user.password_hash = PASSWORD
-    assert user.authenticate(PASSWORD) == True
+    def test_valid_password() -> None:
+        user = User()
+        user.password_hash = PASSWORD
+        assert user.authenticate(PASSWORD) == True
+finally:
+    connection.close()
+    close_all_sessions()
