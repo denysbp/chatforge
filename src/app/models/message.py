@@ -17,6 +17,10 @@ from .enums import (
     MessageStatus
 )
 from datetime import datetime, timezone
+from typing import TYPE_CHECKING
+
+if TYPE_CHECKING:
+    from .conversation import Conversation
 
 
 class Message(Base):
@@ -30,7 +34,12 @@ class Message(Base):
     )
 
     conversation_id: Mapped[UUID] = mapped_column(
-        ForeignKey("conversations.id")
+        ForeignKey("conversations.id"),
+        nullable=True
+    )
+
+    conversation: Mapped["Conversation"] = relationship(
+        back_populates="messages"
     )
 
     role: Mapped[MessageRole] = mapped_column(
@@ -61,11 +70,12 @@ class Message(Base):
         default=0,
     )
 
-    created_atcreated_at: Mapped[datetime] = mapped_column(
-        DateTime,
+    created_at: Mapped[datetime] = mapped_column(
+        DateTime(timezone=True),
         default=lambda : datetime.now(timezone.utc)
     )
 
     completed_at: Mapped[datetime] = mapped_column(
+        DateTime(timezone=True),
         nullable=True
     )

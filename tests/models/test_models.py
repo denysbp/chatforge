@@ -4,32 +4,43 @@ from app.models import (
     Message,
     RefreshToken
 )
+from sqlalchemy.orm import Session
 from app.enviroment import Enviroment
-from app.core import Connection
+from app.core import DataBase
 
 PASSWORD = "123456"
-connection = Connection()
+connection = DataBase()
 connection.create_tables()
-Session = connection.get_session()
-session = Session()
+session: Session = connection.get_session()
+
 
 
 def test_store_models() -> None:
-    user = User()
+    user = User(
+        name="Test",
+        email="test@example.com"
+    )
+    user.password_hash = PASSWORD
+
     con = Conversation(
-        user_id=user.id,
         title="TEST",
+        author=user
     )
+
     mess = Message(
-        conversation_id=con.id,
+        conversation=con
     )
-    user.chats.append(con)
+
     session.add(user)
-    session.add(con)
-    session.add(mess)
     session.commit()
 
-    assert session.query(Message).filter_by(con.id) == con.id
+    stored_message = session.query(Message).filter_by(
+        conversation_id=con.id
+    ).first()
+
+    assert stored_message is not None
+    assert stored_message.conversation_id == con.id
+
 
 
 def test_invalid_password() -> None:

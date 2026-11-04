@@ -11,3 +11,4 @@ arquitetura.md
 # generated caches
 .mypycache
 __pycache__
+.pytest_cache

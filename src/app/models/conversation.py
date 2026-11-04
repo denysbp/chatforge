@@ -12,11 +12,11 @@ from sqlalchemy import (
     DateTime
 )
 from datetime import datetime, timezone
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, List
 
 if TYPE_CHECKING:
     from .user import User
-
+    from .message import Message
 
 class Conversation(Base):
 
@@ -40,6 +40,12 @@ class Conversation(Base):
         String(100),
         nullable=False
     )
+
+    messages: Mapped[List["Message"]] = relationship(
+        back_populates="conversation",
+        cascade="all, delete-orphan"
+    )
+
     model: Mapped[str] = mapped_column(
         String(50),
         default="Quewn0.6b"
@@ -49,11 +55,11 @@ class Conversation(Base):
         default="Hey say something to me"
     )
     created_at: Mapped[datetime] = mapped_column(
-        DateTime,
+        DateTime(timezone.utc),
         default=lambda : datetime.now(timezone.utc)
     )
-    updated_at: Mapped[str] = mapped_column(
-        DateTime,
+    updated_at: Mapped[datetime] = mapped_column(
+        DateTime(timezone.utc),
         nullable=True,
         onupdate=datetime.now(timezone.utc)
     )
