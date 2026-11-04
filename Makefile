@@ -3,7 +3,7 @@ UV_EXIST := $(shell command -v uv 2> /dev/null)
 DB_CONTAINER := $(shell command grep "container_name" docker-compose.yaml | cut -d ':' -f 2 | xargs)
 
 
-all: ensure install
+all: ensure install db
 
 install:
 	@if [ ! -d ".venv" ]; then \
@@ -21,7 +21,7 @@ else
 	@echo "Uv sucessful installed"
 endif
 
-re: fclean install
+re: fclean  install stop db
 
 test:
 	uv run pytest

@@ -35,7 +35,7 @@ class Message(Base):
 
     conversation_id: Mapped[UUID] = mapped_column(
         ForeignKey("conversations.id"),
-        nullable=True
+        nullable=False
     )
 
     conversation: Mapped["Conversation"] = relationship(
