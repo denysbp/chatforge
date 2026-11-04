@@ -1,7 +1,5 @@
 from pydantic import (
     BaseModel,
-    EmailStr,
-    SecretStr,
     Field
 )
 from typing import (
@@ -10,7 +8,7 @@ from typing import (
 )
 from uuid import UUID
 from datetime import datetime
-
+from .common import Pagination
 
 class ConversationCreate(BaseModel):
     user_id: UUID
@@ -35,7 +33,4 @@ class ConversationPublic(BaseModel):
 
 class ConversationList(BaseModel):
     conversations: List[ConversationPublic]
-    page: int = Field(ge=1)
-    page_size: int = Field(ge=1)
-    total: int = Field(ge=0)
-    total_pages: int = Field(ge=0)
+    pagination: Pagination

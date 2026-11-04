@@ -23,11 +23,4 @@ class AuthResponse(BaseModel):
     name: str = Field(min_length=3, max_length=30)
     email: EmailStr
     user_id: UUID
-    acess_token: SecretStr
-
-
-class UserPublic(BaseModel):
-    user_id: UUID
-    email: EmailStr
-    name: str
-    created_at: datetime
+    access_token: str

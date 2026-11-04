@@ -1,7 +1,5 @@
 from pydantic import (
     BaseModel,
-    EmailStr,
-    SecretStr,
     Field,
 )
 from ..models import (
@@ -9,11 +7,11 @@ from ..models import (
     MessageRole
 )
 from typing import (
-    Optional,
     List
 )
 from uuid import UUID
 from datetime import datetime
+from .common import Pagination
 
 
 class SendMessageRequest(BaseModel):
@@ -33,10 +31,7 @@ class MessagePublic(BaseModel):
 
 class MessageList(BaseModel):
     messages: List[MessagePublic]
-    page: int = Field(ge=1)
-    page_size: int = Field(ge=1)
-    total: int = Field(ge=0)
-    total_pages: int = Field(ge=0)
+    pagination: Pagination
 
 
 class StreamEvent(BaseModel):
