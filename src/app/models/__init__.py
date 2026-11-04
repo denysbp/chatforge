@@ -1,6 +1,8 @@
 from .enums import (
     LogLevels,
-    EnvErrorType
+    EnvErrorType,
+    MessageRole,
+    MessageStatus
 )
 from .base import Base
 from .user import User

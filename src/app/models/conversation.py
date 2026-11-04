@@ -9,7 +9,8 @@ from uuid import uuid4
 from sqlalchemy import (
     String,
     ForeignKey,
-    DateTime
+    DateTime,
+    Index
 )
 from datetime import datetime, timezone
 from typing import TYPE_CHECKING, List
@@ -21,6 +22,14 @@ if TYPE_CHECKING:
 class Conversation(Base):
 
     __tablename__ = "conversations"
+
+    __table_args__ = (
+        Index(
+            "idx_conversation_user_updated",
+            "user_id",
+            "updated_at"
+        ),
+    )
 
     id: Mapped[UUID] = mapped_column(
         UUID(as_uuid=True),
