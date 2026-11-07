@@ -3,20 +3,28 @@ from .enums import (
     EnvErrorType,
     MessageRole,
     MessageStatus,
-    UpdateError
+    UpdateUserError,
+    DeleteUserError,
+    UserInfoError
 )
 from .base import Base
 from .user import User
 from .conversation import Conversation
 from .message import Message
 from .refresh_token import RefreshToken
+
+
 __all__ = [
-    "UpdateError",
+    "UpdateUserError",
     "LogLevels",
     "EnvErrorType",
     "Base",
     "User",
     "Message",
     "Conversation",
-    "RefreshToken"
+    "RefreshToken",
+    "MessageStatus",
+    "MessageRole",
+    "DeleteUserError",
+    "UserInfoError"
 ]

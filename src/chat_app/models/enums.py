@@ -29,7 +29,14 @@ class MessageStatus(StrEnum):
     CANCELED = "canceled"
 
 
-class UpdateError(StrEnum):
+class UpdateUserError(StrEnum):
     INCORRECT = "Password incorrect"
     NOT_MATCH = "The provider passwords do not match"
+    NOT_EXIST = "User Don't exists"
+
+
+class DeleteUserError(StrEnum):
+    NOT_EXIST = "User Don't exists"
+
+class UserInfoError(StrEnum):
     NOT_EXIST = "User Don't exists"

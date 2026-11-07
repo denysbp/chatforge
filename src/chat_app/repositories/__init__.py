@@ -1,9 +1,12 @@
 from .users import (
     exists,
-    update
+    update_password,
+    delete,
+    get_user
 )
 
 __all__ = [
     "exists",
-    "update"
+    "update_password",
+    "delete"
 ]

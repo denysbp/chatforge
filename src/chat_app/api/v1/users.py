@@ -18,17 +18,37 @@ from typing import Annotated
 from chat_app.core import data_base
 from chat_app.repositories import (
     exists,
-    update
+    update_password as password_update,
+    delete,
+    get_user
 )
 from chat_app.models import (
     User,
-    UpdateError
+    UpdateUserError,
+    DeleteUserError,
+    UserInfoError
 )
 
+
 users = APIRouter(
-    prefix="/users",
+    prefix="/user",
     tags=["Users"]
 )
+
+
+@users.get(
+    "/info/{str}",
+    response_model=UserPublic,
+    status_code=status.HTTP_201_CREATED
+)
+async def get_info(id: str, db: Annotated[AsyncSession, Depends(data_base.get_db)]):
+    user = await get_user(id, db)
+    if isinstance(user, UserInfoError):
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail=user.value
+        )
+    return user
 
 
 @users.post(
@@ -54,16 +74,32 @@ async def create_user(request: RegisterRequest, db: Annotated[AsyncSession, Depe
     return user
 
 
-@users.post(
+@users.put(
     "/change-password",
     response_model=UserPublic,
-    status_code=status.HTTP_201_CREATED
+    status_code=status.HTTP_201_CREATED,
 )
 async def update_password(request: UserPasswordChange, db: Annotated[AsyncSession, Depends(data_base.get_db)]):
-    user = await update(request, db)
-    if isinstance(user, UpdateError):
+    user = await password_update(request, db)
+    if isinstance(user, UpdateUserError):
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
+            detail=user.value
+        )
+    return user
+
+
+@users.delete(
+    "/delete/{str}",
+    response_model=UserPublic,
+    status_code=status.HTTP_201_CREATED,
+    response_description="User successful deleted"
+)
+async def delete_user(id: str,  db: Annotated[AsyncSession, Depends(data_base.get_db)]):
+    user = await delete(id, db)
+    if isinstance(user, DeleteUserError):
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
             detail=user.value
         )
     return user
