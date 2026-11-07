@@ -1,0 +1,127 @@
+.
+├── alembic
+│   ├── env.py
+│   └── versions
+├── alembic.ini
+├── arquitetura.md
+├── c.txt
+├── dev_reminder.md
+├── docker-compose.yaml
+├── Dockerfile
+├── Makefile
+├── pyproject.toml
+├── README.md
+├── src
+│   └── chat_app
+│       ├── api
+│       │   ├── __init__.py
+│       │   ├── __pycache__
+│       │   │   ├── __init__.cpython-314.pyc
+│       │   │   └── router.cpython-314.pyc
+│       │   ├── router.py
+│       │   └── v1
+│       │       ├── auth.py
+│       │       ├── conversations.py
+│       │       ├── health.py
+│       │       ├── __init__.py
+│       │       ├── messages.py
+│       │       ├── __pycache__
+│       │       │   ├── __init__.cpython-314.pyc
+│       │       │   └── users.cpython-314.pyc
+│       │       └── users.py
+│       ├── core
+│       │   ├── config.py
+│       │   ├── database.py
+│       │   ├── exceptions.py
+│       │   ├── __init__.py
+│       │   ├── logging.py
+│       │   ├── __pycache__
+│       │   │   ├── database.cpython-314.pyc
+│       │   │   ├── __init__.cpython-314.pyc
+│       │   │   └── logging.cpython-314.pyc
+│       │   ├── rate_limit.py
+│       │   └── security.py
+│       ├── dependencies
+│       │   ├── auth.py
+│       │   ├── database.py
+│       │   └── __init__.py
+│       ├── enviroment
+│       │   ├── configs.py
+│       │   ├── __init__.py
+│       │   ├── model.py
+│       │   └── __pycache__
+│       │       ├── configs.cpython-314.pyc
+│       │       ├── __init__.cpython-314.pyc
+│       │       └── model.cpython-314.pyc
+│       ├── exceptions
+│       │   ├── erros.py
+│       │   └── __init__.py
+│       ├── __init__.py
+│       ├── main.py
+│       ├── models
+│       │   ├── base.py
+│       │   ├── conversation.py
+│       │   ├── enums.py
+│       │   ├── __init__.py
+│       │   ├── message.py
+│       │   ├── __pycache__
+│       │   │   ├── base.cpython-314.pyc
+│       │   │   ├── conversation.cpython-314.pyc
+│       │   │   ├── enums.cpython-314.pyc
+│       │   │   ├── __init__.cpython-314.pyc
+│       │   │   ├── message.cpython-314.pyc
+│       │   │   ├── refresh_token.cpython-314.pyc
+│       │   │   └── user.cpython-314.pyc
+│       │   ├── refresh_token.py
+│       │   └── user.py
+│       ├── providers
+│       │   ├── base.py
+│       │   ├── factory.py
+│       │   ├── __init__.py
+│       │   └── openai_provider.py
+│       ├── __pycache__
+│       │   ├── __init__.cpython-314.pyc
+│       │   └── main.cpython-314.pyc
+│       ├── repositories
+│       │   ├── conversations.py
+│       │   ├── __init__.py
+│       │   ├── messages.py
+│       │   ├── __pycache__
+│       │   │   ├── __init__.cpython-314.pyc
+│       │   │   └── users.cpython-314.pyc
+│       │   ├── refresh_tokens.py
+│       │   └── users.py
+│       ├── schemas
+│       │   ├── auth.py
+│       │   ├── common.py
+│       │   ├── conversation.py
+│       │   ├── __init__.py
+│       │   ├── message.py
+│       │   ├── __pycache__
+│       │   │   ├── auth.cpython-314.pyc
+│       │   │   ├── common.cpython-314.pyc
+│       │   │   ├── conversation.cpython-314.pyc
+│       │   │   ├── __init__.cpython-314.pyc
+│       │   │   ├── message.cpython-314.pyc
+│       │   │   └── user.cpython-314.pyc
+│       │   └── user.py
+│       └── services
+│           ├── auth_service.py
+│           ├── chat_service.py
+│           ├── conversation_service.py
+│           ├── __init__.py
+│           └── title_service.py
+├── tests
+│   ├── conftest.py
+│   ├── integration
+│   │   ├── test_auth_api.py
+│   │   ├── test_conversations_api.py
+│   │   └── test_messages_api.py
+│   ├── models
+│   │   └── test_models.py
+│   └── unit
+│       ├── test_auth_service.py
+│       └── test_chat_service.py
+└── uv.lock
+
+28 directories, 97 files
