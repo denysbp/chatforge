@@ -3,7 +3,7 @@ UV_EXIST := $(shell command -v uv 2> /dev/null)
 DB_CONTAINER := $(shell command grep "container_name" docker-compose.yaml | cut -d ':' -f 2 | xargs)
 
 
-all: ensure install db
+all: ensure install db back-end
 
 install:
 	@if [ ! -d ".venv" ]; then \

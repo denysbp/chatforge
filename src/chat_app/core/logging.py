@@ -1,5 +1,5 @@
 import logging
-from src.chat_app.models import LogLevels
+from chat_app.models import LogLevels
 
 DEBUG_FORMAT = (
     "%(levelname)s:%(message)s:"

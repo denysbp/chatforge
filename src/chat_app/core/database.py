@@ -1,36 +1,38 @@
-from sqlalchemy import create_engine
-from sqlalchemy.orm import sessionmaker, Session
-from ..enviroment import ensure_env, settings
+from sqlalchemy.ext.asyncio import (
+    AsyncSession,
+    async_sessionmaker,
+    create_async_engine
+)
+from ..enviroment import settings
 import sys
 from ..models import Base
 from .. import models
-from typing import Generator
+from typing import AsyncGenerator
 
 
 class DataBase:
     def __init__(self):
-        self.engine = create_engine(
+        self.engine = create_async_engine(
             settings.DB_URL.encoded_string(),
             pool_pre_ping=True
         )
-        self.SessionLocal = sessionmaker(
+        self.AsyncSessionLocal = async_sessionmaker(
             bind=self.engine,
-            autoflush=False,
-            autocommit=False
+            class_=AsyncSession,
+            expire_on_commit=False
         )
 
-    def create_tables(self):
-        Base.metadata.create_all(bind=self.engine)
+    def create_tables(self, conn):
+        Base.metadata.create_all(bind=conn)
 
-    def get_db(self) -> Generator[Session]:
-        with self.SessionLocal() as db:
+    async def get_db(self) -> AsyncGenerator[AsyncSession]:
+        async with self.AsyncSessionLocal() as db:
             yield db
 
-    def close(self):
-        self.engine.dispose()
+    async def close(self):
+        await self.engine.dispose()
 
     def drop_tables(self):
         Base.metadata.drop_all(bind=self.engine)
 
 data_base = DataBase()
-data_base.create_tables()
