@@ -21,6 +21,7 @@ class Settings(BaseSettings):
     MODE: Literal["development", "production"]
     ADMIN_EMAIL: EmailStr
     DB_NAME: str
+    ALGORITHM: str
     DB_PASSWORD: SecretStr
     DB_URL: PostgresDsn
     DB_PORT: Annotated[int, Field(ge=1, le=65535)] = 5432

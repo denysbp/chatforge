@@ -40,3 +40,4 @@ class DeleteUserError(StrEnum):
 
 class UserInfoError(StrEnum):
     NOT_EXIST = "User Don't exists"
+    INCORRECT = "Password incorrect"
