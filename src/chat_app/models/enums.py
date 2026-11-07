@@ -27,3 +27,9 @@ class MessageStatus(StrEnum):
     CONCLUDED = "concluded"
     FAILED = "failed"
     CANCELED = "canceled"
+
+
+class UpdateError(StrEnum):
+    INCORRECT = "Password incorrect"
+    NOT_MATCH = "The provider passwords do not match"
+    NOT_EXIST = "User Don't exists"

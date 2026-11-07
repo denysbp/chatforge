@@ -4,7 +4,9 @@ from .auth import (
     LoginRequest
 )
 from .user import (
-    UserPublic
+    UserPublic,
+    UserUpdateInfo,
+    UserPasswordChange
 )
 from .message import (
     SendMessageRequest,
@@ -21,6 +23,7 @@ from .conversation import (
 
 __all__ = [
     "UserPublic",
+    "UserUpdateInfo",
     "RegisterRequest",
     "AuthResponse",
     "LoginRequest",
@@ -31,5 +34,6 @@ __all__ = [
     "ConversationCreate",
     "ConversationPublic",
     "ConversationUpdate",
-    "ConversationList"
+    "ConversationList",
+    "UserPasswordChange"
 ]

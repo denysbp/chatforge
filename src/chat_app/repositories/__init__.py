@@ -1,6 +1,9 @@
-from .users import exists
-
+from .users import (
+    exists,
+    update
+)
 
 __all__ = [
-    "exists"
+    "exists",
+    "update"
 ]
