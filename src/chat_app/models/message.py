@@ -34,7 +34,7 @@ class Message(Base):
             "conversation_id",
             "sequence",
             name="uq_message_conversation_sequence"
-        )
+        ),
     )
 
     id: Mapped[UUID] = mapped_column(

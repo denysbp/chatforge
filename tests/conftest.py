@@ -1,4 +1,4 @@
-from app.enviroment import settings
+from chat-app.enviroment import settings
 from pydantic import (
     EmailStr,
     PostgresDsn,

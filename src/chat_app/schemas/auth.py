@@ -5,7 +5,6 @@ from pydantic import (
     Field
 )
 from uuid import UUID
-from datetime import datetime
 
 
 class RegisterRequest(BaseModel):

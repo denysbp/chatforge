@@ -21,6 +21,10 @@ else
 	@echo "Uv sucessful installed"
 endif
 
+back-end:
+	uv run fastapi dev src/chat_app/main.py
+
+
 re: fclean  install stop db
 
 test:

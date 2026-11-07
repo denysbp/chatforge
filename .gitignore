@@ -12,3 +12,4 @@ arquitetura.md
 .mypycache
 __pycache__
 .pytest_cache
+uv.lock

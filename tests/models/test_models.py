@@ -1,10 +1,10 @@
-from app.models import (
+from chat-app.models import (
     User,
     Conversation,
     Message,
 )
 from sqlalchemy.orm import Session, close_all_sessions
-from app.core import DataBase
+from chat-app.core import DataBase
 import pytest
 
 PASSWORD = "123456"

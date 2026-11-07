@@ -7,7 +7,7 @@ from datetime import datetime
 
 
 class UserPublic(BaseModel):
-    user_id: UUID
+    id: UUID
     email: EmailStr
     name: str
     created_at: datetime
