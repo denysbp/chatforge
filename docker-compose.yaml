@@ -1,10 +1,43 @@
 services:
+  server:
+    image: fastapi-server
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: server
+    env_file:
+      - .env
+    restart: always
+    ports:
+      - "${PORT}:8080"
+    networks:
+      - forge
+    depends_on:
+      db:
+        condition: service_healthy
+
   db:
     image: postgres:17
     container_name: chat-forge
+    restart: always
+    env_file:
+      - .env
     environment:
       POSTGRES_DB: ${DB_NAME}
       POSTGRES_USER: ${DB_USER}
       POSTGRES_PASSWORD: ${DB_PASSWORD}
     ports:
       - "${DB_PORT}:5432"
+    networks:
+      - forge
+    volumes:
+      - ${HOME}/volumes_forge/postgres:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $${POSTGRES_USER} -d $${POSTGRES_DB}"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+networks:
+  forge:
+    driver: bridge

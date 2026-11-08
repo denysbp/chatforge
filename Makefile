@@ -3,13 +3,20 @@ UV_EXIST := $(shell command -v uv 2> /dev/null)
 DB_CONTAINER := $(shell command grep "container_name" docker-compose.yaml | cut -d ':' -f 2 | xargs)
 
 
-all: ensure install db back-end
+all: install dist volumes up
 
-install:
+install: ensure
 	@if [ ! -d ".venv" ]; then \
 		uv sync; \
 	else \
 		echo "Everything is installed"; \
+	fi
+
+dist:
+	@if [ ! -d "dist" ]; then \
+		uv build; \
+	else \
+		echo "Poject builded"; \
 	fi
 
 ensure:
@@ -25,7 +32,7 @@ back-end:
 	uv run fastapi dev src/chat_app/main.py
 
 
-re: fclean  install stop db
+re: fclean  install stop up
 
 test:
 	uv run pytest
@@ -33,8 +40,11 @@ test:
 ps:
 	docker ps
 
-db:
-	docker compose up -d
+up:
+	docker compose up -d --build
+
+volumes:
+	mkdir -p ${HOME}/volumes_forge/postgres
 
 stop:
 	docker stop $(DB_CONTAINER)
