@@ -34,6 +34,7 @@ class Conversation(Base):
     id: Mapped[UUID] = mapped_column(
         UUID(as_uuid=True),
         primary_key=True,
+        nullable=False,
         default=uuid4
     )
     user_id: Mapped[UUID] = mapped_column(
@@ -65,6 +66,7 @@ class Conversation(Base):
     )
     created_at: Mapped[datetime] = mapped_column(
         DateTime(timezone.utc),
+        nullable=False,
         default=lambda : datetime.now(timezone.utc)
     )
     updated_at: Mapped[datetime] = mapped_column(

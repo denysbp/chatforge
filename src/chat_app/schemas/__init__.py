@@ -15,6 +15,7 @@ from .message import (
     StreamEvent
 )
 from .conversation import (
+    MinimalCreate,
     ConversationCreate,
     ConversationPublic,
     ConversationUpdate,
@@ -22,6 +23,7 @@ from .conversation import (
 )
 
 __all__ = [
+    "MinimalCreate",
     "UserPublic",
     "UserUpdateInfo",
     "RegisterRequest",
