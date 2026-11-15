@@ -7,6 +7,10 @@ from .users import (
 from .refresh_tokens import (
     get_user_with_form
 )
+from .conversations import (
+    create_conversation,
+    list_conversations
+)
 
 __all__ = [
     "exists",
@@ -14,4 +18,6 @@ __all__ = [
     "delete",
     "get_user",
     "get_user_with_form",
+    "create_conversation",
+    "list_conversations",
 ]

@@ -1,15 +1,15 @@
-from chat-app.models import (
+from chat_app.models import (
     User,
     Conversation,
     Message,
 )
 from sqlalchemy.orm import Session, close_all_sessions
-from chat-app.core import DataBase
+from chat_app.core import DataBase
 import pytest
 
 PASSWORD = "123456"
 connection = DataBase()
-session: Session = connection.get_session()
+session: Session = connection.get_db()
 
 try:
     @pytest.fixture(scope="session", autouse=True)

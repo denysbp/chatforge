@@ -31,6 +31,9 @@ endif
 back-end:
 	uv run fastapi dev src/chat_app/main.py
 
+postgres:
+	docker compose up -d --build db
+
 
 re: fclean  install stop up
 
@@ -48,6 +51,9 @@ volumes:
 
 stop:
 	docker stop $(DB_CONTAINER)
+
+down:
+	docker compose down
 
 lint:
 	uv run flake8 .

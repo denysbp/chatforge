@@ -19,6 +19,12 @@ from chat_app.schemas import (
     ConversationUpdate,
     MinimalCreate
 )
+from chat_app.schemas.common import Pagination
+from chat_app.repositories import (
+    create_conversation,
+    list_conversations
+)
+
 
 
 conversation_route = APIRouter(
@@ -32,24 +38,34 @@ conversation_route = APIRouter(
     response_model=ConversationPublic,
     status_code=status.HTTP_201_CREATED
 )
-async def create_conversation(
+async def create(
     request: MinimalCreate,
     user: CurrentUser,
     db: Annotated[AsyncSession, Depends(data_base.get_db)]
 ):
-    creation = ConversationCreate(
-        title=request.title,
-        model=request.model,
-        system_prompt=request.system_prompt,
-        user_id=user.id,
+
+    return await create_conversation(request, user, db)
+
+
+@conversation_route.get(
+    "/convesations",
+    response_model=ConversationList | list,
+    status_code=status.HTTP_200_OK
+)
+async def get_conversations(
+    user: CurrentUser,
+    db: Annotated[AsyncSession, Depends(data_base.get_db)]
+):
+    models = await list_conversations(
+        user,
+        db
     )
-    post = Conversation(
-        title=creation.title,
-        model=creation.model,
-        system_prompt=creation.system_prompt,
-        user_id=creation.user_id
+    pagination = Pagination(
+        total=len(models)
     )
-    db.add(post)
-    await db.commit()
-    await db.refresh(post)
-    return post
+    conversations = ConversationList(
+        conversations=models,
+        pagination=pagination
+    )
+    return conversations
+

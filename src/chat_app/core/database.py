@@ -4,7 +4,6 @@ from sqlalchemy.ext.asyncio import (
     create_async_engine
 )
 from ..enviroment import settings
-import sys
 from ..models import Base
 from .. import models
 from typing import AsyncGenerator
@@ -31,8 +30,5 @@ class DataBase:
 
     async def close(self):
         await self.engine.dispose()
-
-    def drop_tables(self):
-        Base.metadata.drop_all(bind=self.engine)
 
 data_base = DataBase()

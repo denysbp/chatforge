@@ -32,6 +32,9 @@ from chat_app.services.auth_service import (
     oauth2_schema,
     verify_acess_token
 )
+from chat_app.services.auth_service import (
+    CurrentUser
+)
 
 
 users = APIRouter(
@@ -70,13 +73,7 @@ async def get_current_user(
     response_model=UserPublic,
     status_code=status.HTTP_200_OK
 )
-async def get_info(id: str, db: Annotated[AsyncSession, Depends(data_base.get_db)]):
-    user = await get_user(id, db)
-    if isinstance(user, UserInfoError):
-        raise HTTPException(
-            status_code=status.HTTP_400_BAD_REQUEST,
-            detail=user.value
-        )
+async def get_info(user: str, db: Annotated[AsyncSession, Depends(data_base.get_db)]):
     return user
 
 
@@ -108,7 +105,10 @@ async def create_user(request: RegisterRequest, db: Annotated[AsyncSession, Depe
     response_model=UserPublic,
     status_code=status.HTTP_202_ACCEPTED,
 )
-async def update_password(request: UserPasswordChange, db: Annotated[AsyncSession, Depends(data_base.get_db)]):
+async def update_password(
+    request: UserPasswordChange,
+    db: Annotated[AsyncSession, Depends(data_base.get_db)]
+):
     user = await password_update(request, db)
     if isinstance(user, UpdateUserError):
         raise HTTPException(
@@ -117,15 +117,17 @@ async def update_password(request: UserPasswordChange, db: Annotated[AsyncSessio
         )
     return user
 
-
 @users.delete(
-    "/delete/{str}",
+    "/delete",
     response_model=UserPublic,
     status_code=status.HTTP_200_OK,
     response_description="User successful deleted"
 )
-async def delete_user(id: str,  db: Annotated[AsyncSession, Depends(data_base.get_db)]):
-    user = await delete(id, db)
+async def delete_user(
+    user: CurrentUser,
+    db: Annotated[AsyncSession, Depends(data_base.get_db)]
+):
+    user = await delete(user.id, db)
     if isinstance(user, DeleteUserError):
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,

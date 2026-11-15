@@ -79,4 +79,4 @@ async def get_loged_user(
         )
     return user
 
-CurrentUser = Annotated[User, Depends(get_loged_user)] # FOR CREATE POST AND CONVERSATION
+CurrentUser = Annotated[User, Depends(get_loged_user)]

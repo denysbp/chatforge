@@ -39,4 +39,4 @@ class Settings(BaseSettings):
 settings = Settings()
 
 if __name__ == "__main__":
-    print(settings)
+    print(settings.OPENIA_API)

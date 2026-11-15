@@ -3,7 +3,6 @@ from ..schemas import (
     RegisterRequest,
     UserPasswordChange,
 )
-from sqlalchemy.orm import selectinload
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy import select
 from chat_app.models import (
