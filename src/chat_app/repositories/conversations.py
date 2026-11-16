@@ -119,3 +119,34 @@ async def delete_conversation(
     db.delete(conversation)
     db.commit()
     return conversation
+
+
+async def update_conversation(
+    request: ConversationUpdate,
+    user: User,
+    db: AsyncSession,
+    c_id: UUID
+) -> Conversation:
+    query = await db.execute(
+        select(Conversation).where(Conversation.id == c_id)
+    )
+
+    conversation = query.scalars().first()
+    if not conversation:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail=f"Conversation: {c_id} not found."
+        )
+
+    elif conversation.user_id != user.id:
+        error = "You don't have permission to delete that conversation."
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail=error
+        )
+
+    conversation.archived = request.archived
+    conversation.title = request.title
+    await db.refresh(conversation)
+    await db.commit()
+    return conversation

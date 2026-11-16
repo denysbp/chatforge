@@ -22,7 +22,7 @@ class ConversationCreate(MinimalCreate):
 
 class ConversationUpdate(BaseModel):
     title: str = Field(min_length=5, max_length=100)
-    model: Optional[str] = Field(min_length=1, max_length=100)
+    archived: bool = Field(default=False)
 
 
 class ConversationPublic(BaseModel):

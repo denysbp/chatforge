@@ -48,14 +48,14 @@ async def update_password(request: UserPasswordChange, db: AsyncSession) -> User
     if not user.authenticate(request.current_password.get_secret_value()):
         return UpdateUserError.INCORRECT
     user.password_hash = request.fist_password.get_secret_value()
-    db.commit()
-    db.refresh(user)
+    await db.commit()
+    await db.refresh(user)
     return user
 
 
-async def delete(id: str, db: AsyncSession) -> User | DeleteUserError:
+async def delete(user: User, db: AsyncSession) -> User | DeleteUserError:
     filter_query = (
-        User.id == id
+        User.id == user.id
     )
 
     query = await db.execute(
@@ -65,6 +65,6 @@ async def delete(id: str, db: AsyncSession) -> User | DeleteUserError:
     user = query.scalars().first()
     if not user:
         return DeleteUserError.NOT_EXIST
-    db.delete(user)
-    db.commit()
+    await db.delete(user)
+    await db.commit()
     return user

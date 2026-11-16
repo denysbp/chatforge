@@ -11,7 +11,8 @@ from .conversations import (
     create_conversation,
     list_conversations,
     get_conversation,
-    delete_conversation
+    delete_conversation,
+    update_conversation
 )
 
 __all__ = [
@@ -24,4 +25,5 @@ __all__ = [
     "list_conversations",
     "get_conversation",
     "delete_conversation",
+    "update_conversation"
 ]

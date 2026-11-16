@@ -10,7 +10,8 @@ from sqlalchemy import (
     String,
     ForeignKey,
     DateTime,
-    Index
+    Index,
+    Boolean
 )
 from datetime import datetime, timezone
 from typing import TYPE_CHECKING, List
@@ -38,8 +39,8 @@ class Conversation(Base):
         default=uuid4
     )
     user_id: Mapped[UUID] = mapped_column(
-        ForeignKey("users.id"),
-        nullable=False
+        ForeignKey("users.id", ondelete="CASCADE"),
+        nullable=False,
     )
 
     author: Mapped["User"] = relationship(
@@ -53,7 +54,8 @@ class Conversation(Base):
 
     messages: Mapped[List["Message"]] = relationship(
         back_populates="conversation",
-        cascade="all, delete-orphan"
+        cascade="all, delete-orphan",
+        passive_deletes=True
     )
 
     model: Mapped[str] = mapped_column(
@@ -74,6 +76,8 @@ class Conversation(Base):
         nullable=True,
         onupdate=datetime.now(timezone.utc)
     )
-    archived_at: Mapped[str] = mapped_column(
-        nullable=True
+    archived: Mapped[bool] = mapped_column(
+        Boolean,
+        default=False,
+        nullable=False
     )

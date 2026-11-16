@@ -44,12 +44,12 @@ class Message(Base):
     )
 
     conversation_id: Mapped[UUID] = mapped_column(
-        ForeignKey("conversations.id"),
+        ForeignKey("conversations.id", ondelete="CASCADE"),
         nullable=False
     )
 
     conversation: Mapped["Conversation"] = relationship(
-        back_populates="messages"
+        back_populates="messages",
     )
 
     role: Mapped[MessageRole] = mapped_column(

@@ -45,7 +45,9 @@ class User(Base):
     )
 
     chats: Mapped[List["Conversation"]] = relationship(
-        back_populates="author"
+        back_populates="author",
+        cascade="all, delete-orphan",
+        passive_deletes=True
     )
 
     created_at: Mapped[datetime] = mapped_column(

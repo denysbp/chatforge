@@ -14,22 +14,15 @@ from chat_app.schemas import (
     UserPasswordChange
 )
 from sqlalchemy.ext.asyncio import AsyncSession
-from typing import Annotated
 from chat_app.repositories import (
     exists,
     update_password as password_update,
     delete,
-    get_user
 )
 from chat_app.models import (
     User,
     UpdateUserError,
     DeleteUserError,
-    UserInfoError
-)
-from chat_app.services.auth_service import (
-    oauth2_schema,
-    verify_acess_token
 )
 from chat_app.services.auth_service import (
     CurrentUser
@@ -50,7 +43,6 @@ users = APIRouter(
 )
 async def get_current_user(
     user: CurrentUser,
-    db: DbSession
 ):
     return user
 
@@ -95,6 +87,7 @@ async def update_password(
         )
     return user
 
+
 @users.delete(
     "/delete",
     response_model=UserPublic,
@@ -105,7 +98,7 @@ async def delete_user(
     user: CurrentUser,
     db: DbSession
 ):
-    user = await delete(user.id, db)
+    user = await delete(user, db)
     if isinstance(user, DeleteUserError):
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,

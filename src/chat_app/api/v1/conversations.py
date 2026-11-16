@@ -13,7 +13,8 @@ from chat_app.repositories import (
     create_conversation,
     list_conversations,
     get_conversation,
-    delete_conversation
+    delete_conversation,
+    update_conversation
 )
 from chat_app.core import DbSession
 from fastapi import (
@@ -101,6 +102,26 @@ async def delete(
     c_id: UUID
 ):
     conversation = await delete_conversation(
+        user,
+        db,
+        c_id
+    )
+    return conversation
+
+
+@conversation_route.put(
+    "/{c_id}/update",
+    response_model=ConversationPublic,
+    status_code=status.HTTP_200_OK
+)
+async def update(
+    request: ConversationUpdate,
+    user: CurrentUser,
+    db: DbSession,
+    c_id: UUID
+):
+    conversation = await update_conversation(
+        request,
         user,
         db,
         c_id
