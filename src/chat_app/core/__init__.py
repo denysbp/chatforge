@@ -1,4 +1,4 @@
-from .database import DataBase, data_base
+from .database import DataBase, data_base, DbSession
 from .logging import (
     configure_logging
     )
@@ -6,5 +6,6 @@ from .logging import (
 __all__ = [
     "DataBase",
     "data_base",
-    "configure_logging"
+    "configure_logging",
+    "DbSession"
 ]

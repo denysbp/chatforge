@@ -15,7 +15,6 @@ from chat_app.schemas import (
 )
 from sqlalchemy.ext.asyncio import AsyncSession
 from typing import Annotated
-from chat_app.core import data_base
 from chat_app.repositories import (
     exists,
     update_password as password_update,
@@ -35,7 +34,8 @@ from chat_app.services.auth_service import (
 from chat_app.services.auth_service import (
     CurrentUser
 )
-
+from chat_app.core import DbSession
+from chat_app.services.auth_service import CurrentUser
 
 users = APIRouter(
     prefix="/user",
@@ -49,31 +49,9 @@ users = APIRouter(
     status_code=status.HTTP_200_OK
 )
 async def get_current_user(
-    token: Annotated[str, Depends(oauth2_schema)],
-    db: Annotated[AsyncSession, Depends(data_base.get_db)]
+    user: CurrentUser,
+    db: DbSession
 ):
-    user_id = verify_acess_token(token)
-    if user_id is None:
-        raise HTTPException(
-            status_code=status.HTTP_401_UNAUTHORIZED,
-            detail="Invalid or expired token",
-            headers={"WWW-Authenticate": "Bearer"}
-        )
-
-    user = await get_user(user_id, db)
-    if isinstance(user, UserInfoError):
-        raise HTTPException(
-            status_code=status.HTTP_400_BAD_REQUEST,
-            detail=user.value
-        )
-    return user
-
-@users.get(
-    "/info/{str}",
-    response_model=UserPublic,
-    status_code=status.HTTP_200_OK
-)
-async def get_info(user: str, db: Annotated[AsyncSession, Depends(data_base.get_db)]):
     return user
 
 
@@ -82,7 +60,7 @@ async def get_info(user: str, db: Annotated[AsyncSession, Depends(data_base.get_
     response_model=UserPublic,
     status_code=status.HTTP_201_CREATED
 )
-async def create_user(request: RegisterRequest, db: Annotated[AsyncSession, Depends(data_base.get_db)]):
+async def create_user(request: RegisterRequest, db: DbSession):
     if await exists(request, db):
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
@@ -107,7 +85,7 @@ async def create_user(request: RegisterRequest, db: Annotated[AsyncSession, Depe
 )
 async def update_password(
     request: UserPasswordChange,
-    db: Annotated[AsyncSession, Depends(data_base.get_db)]
+    db: DbSession
 ):
     user = await password_update(request, db)
     if isinstance(user, UpdateUserError):
@@ -125,7 +103,7 @@ async def update_password(
 )
 async def delete_user(
     user: CurrentUser,
-    db: Annotated[AsyncSession, Depends(data_base.get_db)]
+    db: DbSession
 ):
     user = await delete(user.id, db)
     if isinstance(user, DeleteUserError):

@@ -9,7 +9,9 @@ from .refresh_tokens import (
 )
 from .conversations import (
     create_conversation,
-    list_conversations
+    list_conversations,
+    get_conversation,
+    delete_conversation
 )
 
 __all__ = [
@@ -20,4 +22,6 @@ __all__ = [
     "get_user_with_form",
     "create_conversation",
     "list_conversations",
+    "get_conversation",
+    "delete_conversation",
 ]

@@ -6,7 +6,8 @@ from sqlalchemy.ext.asyncio import (
 from ..enviroment import settings
 from ..models import Base
 from .. import models
-from typing import AsyncGenerator
+from typing import AsyncGenerator, Annotated
+from fastapi import Depends
 
 
 class DataBase:
@@ -32,3 +33,4 @@ class DataBase:
         await self.engine.dispose()
 
 data_base = DataBase()
+DbSession = Annotated[AsyncSession, Depends(data_base.get_db)]
